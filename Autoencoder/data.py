@@ -3,7 +3,7 @@ import tensorflow as tf
 import random
 
 i_range = 100
-n_spectra = 30
+n_spectra = 50
 
 # %%   
 """

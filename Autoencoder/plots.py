@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-n_spectra = 30
+n_spectra = 50
 
 i_range = 10
 
