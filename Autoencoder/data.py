@@ -14,11 +14,11 @@ def load_data(cases,n_spectra):
     
     n_cases = len(cases)
 
-    wn = np.load('./data/wavenumbers.npy')
+    wn = np.load('./LecturePhysicsAwareML/Autoencoder/data/wavenumbers.npy')
     
     wn_c = np.tile(np.expand_dims(wn,axis=0),(n_cases*n_spectra,1))
     
-    X_finetune = np.load('./data/X_finetune.npy')
+    X_finetune = np.load('./LecturePhysicsAwareML/Autoencoder/data/X_finetune.npy')
     
     spectra = []
     label = []
@@ -36,8 +36,8 @@ def load_data(cases,n_spectra):
 
 def load_single_case(case):
     
-    wn = np.load('./data/wavenumbers.npy')    
-    X_finetune = np.load('./data/X_finetune.npy')
+    wn = np.load('./LecturePhysicsAwareML/Autoencoder/data/wavenumbers.npy')    
+    X_finetune = np.load('./LecturePhysicsAwareML/Autoencoder/data/X_finetune.npy')
 
     spectra = X_finetune[case*i_range:case*i_range+i_range,:]
     
