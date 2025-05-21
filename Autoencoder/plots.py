@@ -31,19 +31,13 @@ def plot_spectra(wn, spectra, color, title):
     plt.show()
     
     
-def plot_latent_space_ij(model_D, spectra_c, spectra_t, label_c, label_t, i, j):
+def plot_latent_space_ij(model_D, spectra, label, i, j):
     
-    ls_c = model_D(spectra_c)
-    ls_t = model_D(spectra_t)
+    ls = model_D(spectra)
     
     fig, ax = plt.subplots(1, dpi=500,figsize=(6,6))
-    
-    ax.scatter(ls_c[0:1,i], ls_c[0:1,j],c=colorsCPS[4], alpha=0.8,label='calibration',s=50)
-    ax.scatter(ls_t[0:1,i], ls_t[0:1,j],c=colorsCPS[4], alpha=0.8,marker='s',edgecolors= "black",label='test',s=50)
         
-    ax.scatter(ls_c[:,i], ls_c[:,j],c=colorsCPS[label_c[:].astype(int)], alpha=0.8,s=50)
-    ax.scatter(ls_t[:,i], ls_t[:,j],c=colorsCPS[label_t[:].astype(int)], alpha=0.8,marker='s',edgecolors= "black",s=50)
-    
+    ax.scatter(ls[:,i], ls[:,j],c=colorsCPS[label[:].astype(int)], alpha=0.8,s=50)
         
     ax.legend()
     ax.set_xlabel(f'$h_{i+1}$')
@@ -58,7 +52,6 @@ def plot_loss(h):
     
     plt.figure()
     plt.semilogy(h.history['loss'], label='training loss')
-    plt.semilogy(h.history['val_loss'], label='validation loss')
     plt.grid(which='both')
     plt.xlabel('calibration epoch')
     plt.ylabel('log$_{10}$ MSE')
