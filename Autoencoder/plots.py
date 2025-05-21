@@ -26,6 +26,8 @@ def plot_spectra(wn, spectra, color, title):
     ax.set_xticks([400,1100,1800])
     ax.set_yticks([0,1])
         
+    ax.set_ylabel('intensity')
+    ax.set_xlabel('Raman shift [cm$^{-1}$]')    
     
     plt.title(f'Bacterium {title}')
     plt.show()

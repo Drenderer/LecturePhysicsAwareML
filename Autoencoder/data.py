@@ -3,6 +3,7 @@ import tensorflow as tf
 import random
 
 i_range = 100
+n_spectra = 30
 
 # %%   
 """
@@ -10,7 +11,7 @@ Load calibration data and plot them
 
 """
 
-def load_data(cases,n_spectra):
+def load_data(cases):
     
     n_cases = len(cases)
 
@@ -40,6 +41,8 @@ def load_single_case(case):
     X_finetune = np.load('./LecturePhysicsAwareML/Autoencoder/data/X_finetune.npy')
 
     spectra = X_finetune[case*i_range:case*i_range+i_range,:]
+    
+    spectra = spectra[0:n_spectra,:]
     
     
     return wn, spectra
