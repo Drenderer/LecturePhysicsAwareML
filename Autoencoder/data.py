@@ -10,26 +10,13 @@ Load calibration data and plot them
 
 """
 
-def load_data(cases,n_calib,n_test):
+def load_data(cases,n_spectra):
     
     n_cases = len(cases)
 
-    paths_all = set(range(i_range*n_cases))
-    paths_c = set(random.sample(paths_all, n_calib))
-    paths_all -= paths_c
-    paths_t = set(random.sample(paths_all,n_test))
-    paths_all -= paths_t
-    paths_v = paths_all
-    
-    paths_c = list(paths_c)
-    paths_t = list(paths_t)
-    paths_v = list(paths_v)
-    
     wn = np.load('./data/wavenumbers.npy')
     
-    wn_c = np.tile(np.expand_dims(wn,axis=0),(n_cases*70,1))
-    wn_t = np.tile(np.expand_dims(wn,axis=0),(n_cases*15,1))
-    wn_v = np.tile(np.expand_dims(wn,axis=0),(n_cases*15,1))
+    wn_c = np.tile(np.expand_dims(wn,axis=0),(n_cases*n_spectra,1))
     
     X_finetune = np.load('./data/X_finetune.npy')
     
@@ -39,20 +26,12 @@ def load_data(cases,n_calib,n_test):
         case = cases[i]
         spectra2 = X_finetune[case*i_range:case*i_range+i_range,:]
         label2 = i*np.ones_like(spectra2[:,0]) 
-        spectra.append(spectra2)
-        label.append(label2)
-    spectra = tf.concat(spectra,0).numpy()
-    label = tf.concat(label,0).numpy()
-        
-    spectra_c = spectra[np.array(paths_c),:]
-    spectra_t = spectra[np.array(paths_t),:]
-    spectra_v = spectra[np.array(paths_v),:]
+        spectra.append(spectra2[0:n_spectra,:])
+        label.append(label2[0:n_spectra])
+    spectra_c = tf.concat(spectra,0).numpy()
+    label_c = tf.concat(label,0).numpy()
     
-    label_c = label[np.array(paths_c)]
-    label_t = label[np.array(paths_t)]
-    label_v = label[np.array(paths_v)]
-    
-    return wn_c, wn_t, wn_v, spectra_c, spectra_t, spectra_v, label_c, label_t, label_v
+    return wn_c, spectra_c, label_c
 
 
 def load_single_case(case):
