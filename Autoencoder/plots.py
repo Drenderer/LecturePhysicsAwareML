@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-
+n_spectra = 30
 
 i_range = 10
 
@@ -20,7 +20,7 @@ def plot_spectra(wn, spectra, color, title):
     fig, ax = plt.subplots(1, dpi=80,figsize=(6,4))
     
     
-    for i in range(100):
+    for i in range(n_spectra):
         ax.plot(wn[:],spectra[i,:],color=colorsCPS[color],alpha=0.2)         
       
     ax.set_xticks([400,1100,1800])
