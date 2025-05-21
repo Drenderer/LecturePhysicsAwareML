@@ -17,7 +17,7 @@ colorsCPS = np.tile(colorsCPS,[3,1,1])
 
 def plot_spectra(wn, spectra, color, title):
     
-    fig, ax = plt.subplots(1, dpi=200,figsize=(6,4))
+    fig, ax = plt.subplots(1, dpi=80,figsize=(6,4))
     
     
     for i in range(100):
@@ -35,7 +35,7 @@ def plot_latent_space_ij(model_D, spectra, label, i, j):
     
     ls = model_D(spectra)
     
-    fig, ax = plt.subplots(1, dpi=200,figsize=(6,6))
+    fig, ax = plt.subplots(1, dpi=80,figsize=(6,6))
         
     ax.scatter(ls[:,i], ls[:,j],c=colorsCPS[label[:].astype(int)], alpha=0.8,s=50)
         
