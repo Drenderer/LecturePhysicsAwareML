@@ -3,6 +3,7 @@ name = "autoencoder"
 version = "0.1.0"
 requires-python = ">=3.12"
 dependencies = [
+    "ipykernel>=6.29.5",
     "matplotlib>=3.10.3",
     "numpy>=2.1.3",
     "tensorflow>=2.19.0",
