@@ -10,7 +10,6 @@ Authors: Dominik K. Klein, Jasper O. Schommartz
 """
 
 
-# %%   
 """
 Import modules
 
@@ -21,7 +20,6 @@ import datetime
 now = datetime.datetime.now
 
 
-# %%   
 """
 MLP: custom trainable layer
 
@@ -47,7 +45,6 @@ class MLP(layers.Layer):
     
 
 
-# %%   
 """
 main: construction of the NN model
 
@@ -66,7 +63,6 @@ def main(**kwargs):
 
 
 
-# %%   
 """
 MLP_con: custom trainable layer with possible non-negative weight constraints
 
@@ -99,7 +95,6 @@ class MLP_con(layers.Layer):
     
 
 
-# %%   
 """
 main_con: construction of the NN model with possible non-negative weight 
           constraints
@@ -119,7 +114,6 @@ def main_con(**kwargs):
 
 
 
-# %%   
 """
 MLP_con_grad: custom trainable layer with possible non-negative weight 
               constraints and possibility of Sobolev training
@@ -142,7 +136,6 @@ class MLP_grad(layers.Layer):
         return y, dy
 
 
-# %%   
 """
 main_con: construction of the NN model with possible non-negative weight constraints
 
@@ -156,5 +149,9 @@ def main_con_grad(loss_weights=[1, 1], **kwargs):
     # connect input and output
     model = tf.keras.Model(inputs = [xs], outputs = [ys, dys])
     # define optimizer and loss function
-    model.compile('adam', 'mse', loss_weights=loss_weights)
+    model.compile(
+        optimizer='adam',
+        loss=['mse', 'mse'],
+        loss_weights=loss_weights
+    )
     return model
