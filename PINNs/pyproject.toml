@@ -1,24 +1,29 @@
 [build-system]
-requires = ["setuptools", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project]
 name = "paml_pinns"
-version = "25.2"
-description = "Package providing modules for the PINN task."
+version = "25.6"
+description = "Package for the PINNs Task in the PAML Lecture"
 authors = [
     { name = "Jasper O. Schommartz", email = "schommartz@cps.tu-darmstadt.de" },
 ]
-maintainers = [
-    { name = "Jasper O. Schommartz", email = " schommartz@cps.tu-darmstadt.de" }
-]
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.13"
+dependencies = [
+    "equinox>=0.12.2",
+    "ipykernel>=6.29.5",
+    "jax>=0.6.1",
+    "matplotlib>=3.10.3",
+    "numpy>=2.2.6",
+    "optax>=0.2.4",
+    "paramax>=0.0.3",
+]
 classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent"
 ]
-dependencies = ["jax", "equinox", "optax", "paramax", "matplotlib", "numpy"]
 
 [project.urls]
 Repository = "https://github.com/CPSHub/LecturePhysicsAwareML"
