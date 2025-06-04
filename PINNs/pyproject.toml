@@ -10,7 +10,7 @@ authors = [
     { name = "Jasper O. Schommartz", email = "schommartz@cps.tu-darmstadt.de" },
 ]
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.11"
 dependencies = [
     "equinox>=0.12.2",
     "ipykernel>=6.29.5",
