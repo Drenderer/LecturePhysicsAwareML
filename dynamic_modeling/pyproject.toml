@@ -4,14 +4,14 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 authors = [
-    { name = "Fabian Roth", email = "fabian.roth.24@stud.tu-darmstadt.de" }
+    { name = "Fabian Roth", email = "roth@cps.tu-darmstadt.de" }
 ]
 requires-python = ">=3.11"
 dependencies = [
-    "diffrax",
+    "diffrax>=0.7.0",
     "klax",
-    "matplotlib",
-    "notebook",
+    "matplotlib>=3.10.3",
+    "notebook>=7.4.3",
 ]
 
 [project.scripts]
