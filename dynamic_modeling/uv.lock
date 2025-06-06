@@ -428,7 +428,7 @@ requires-dist = [
     { name = "diffrax", specifier = ">=0.7.0" },
     { name = "klax", git = "https://github.com/Drenderer/klax?rev=6c16453e573364650045e93a93f1c9d719789d0f" },
     { name = "matplotlib", specifier = ">=3.10.3" },
-    { name = "notebook", specifier = ">=7.4.3" },
+    { name = "notebook", specifier = ">=6.5.7" },
 ]
 
 [[package]]
