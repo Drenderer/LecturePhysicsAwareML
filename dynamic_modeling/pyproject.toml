@@ -9,7 +9,7 @@ authors = [
 requires-python = ">=3.12"
 dependencies = [
     "diffrax>=0.7.0",
-    "klax",
+    "klax @ git+https://github.com/Drenderer/klax@a6573058a3295b403d11d526055f55cb2ec8515b",
     "matplotlib>=3.10.3",
     "notebook>=7.4.3",
 ]
