@@ -20,6 +20,3 @@ dynamic-modeling = "dynamic_modeling:main"
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
-
-[tool.uv.sources]
-klax = { git = "https://github.com/Drenderer/klax", rev = "6c16453e573364650045e93a93f1c9d719789d0f" }
