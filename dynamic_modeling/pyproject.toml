@@ -8,10 +8,10 @@ authors = [
 ]
 requires-python = ">=3.11"
 dependencies = [
-    # "diffrax",
-    "klax@git+https://github.com/Drenderer/klax.git@6c16453e573364650045e93a93f1c9d719789d0f",
-    # "matplotlib",
-    # "notebook",
+    "diffrax",
+    "klax",
+    "matplotlib",
+    "notebook",
 ]
 
 [project.scripts]
