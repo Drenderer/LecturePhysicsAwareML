@@ -9,6 +9,7 @@ authors = [
 requires-python = ">=3.11"
 dependencies = [
     "diffrax>=0.7.0",
+    "klax",
     "matplotlib>=3.10.3",
     "notebook>=6.5.7",
 ]
@@ -19,3 +20,6 @@ dynamic-modeling = "dynamic_modeling:main"
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.uv.sources]
+klax = { git = "https://github.com/Drenderer/klax", rev = "6c16453e573364650045e93a93f1c9d719789d0f" }

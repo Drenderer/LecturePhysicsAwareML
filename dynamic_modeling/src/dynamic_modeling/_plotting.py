@@ -4,6 +4,7 @@ import numpy as np
 from jaxtyping import Array
 from matplotlib import pyplot as plt
 from matplotlib.animation import FuncAnimation
+from matplotlib.axes import Axes
 from IPython.display import HTML
 
 
@@ -60,35 +61,95 @@ def make_spring(start, end, nodes, width):
 def animate_spring_pendulum(
     ts: Array, qs: Array, fps: int = 30, speedup: int = 3
 ) -> HTML:
+    """Animate one or multiple solutions of the spring pendulum via
+    matplotlib in a Jupyter notebook.
+
+    Args:
+        ts: 1D array of monotonically increasing time stamps
+            with ``shape=(k,)``.
+        qs: 2D or 3D array of ``shape=(..., k, n)`` containing the x
+            and y coordinates of pendulum mass as the first two
+            entries along the last axis. If 3D then the first axis is
+            the batch axis.
+        fps: Frames per second. Defaults to 30.
+        speedup: Speedup of the animation. Defaults to 3.
+
+    Returns:
+        HTML display object. When this object is returned by an
+        expression or passed to the display function of a jupyter notebook,
+        it will result in the data being displayed in the frontend.
+    """
     qs = qs if qs.shape[-1] == 2 else qs[..., :2]
 
+    qs = qs if qs.ndim == 3 else qs[np.newaxis, ...]
+
     fig, ax = plt.subplots()
-    x_max, y_max = np.maximum(np.abs(qs).max(axis=0), 0.5)
-    ax.set(
-        xlim=1.1 * np.array([-x_max, x_max]),
-        ylim=1.1 * np.array([-y_max, 0.3]),
-        xlabel="x",
-        ylabel="y",
-    )
-    ax.set_aspect("equal")
-    (spring,) = ax.plot(
-        *make_spring(np.array([0.0, 0.0]), qs[0], 50, 0.1), c="black", lw=1
-    )
-    bob = ax.scatter(qs[0, 0], qs[0, 1], s=500, marker="o", zorder=3)
-    _ = ax.scatter(
+    x_max, y_max = np.maximum(np.abs(qs).max(axis=(0, 1)), 0.5)
+
+    artists_per_q = []
+    for batch_index, q in enumerate(qs):
+        ax.set(
+            xlim=1.1 * np.array([-x_max, x_max]),
+            ylim=1.1 * np.array([-y_max, 0.3]),
+            xlabel="x",
+            ylabel="y",
+        )
+        ax.set_aspect("equal")
+        (spring,) = ax.plot(
+            *make_spring(np.array([0.0, 0.0]), q[0], 50, 0.1),
+            c="black" if batch_index == 0 else "gray",
+            zorder=3 if batch_index == 0 else 1,
+            lw=1,
+        )
+        bob = ax.scatter(
+            q[0, 0],
+            q[0, 1],
+            s=500,
+            marker="o",
+            c="blue" if batch_index == 0 else "gray",
+            zorder=4 if batch_index == 0 else 2,
+        )
+        artists_per_q.append((spring, bob))
+    ax.scatter(
         0, 0, s=50, marker="o", facecolors="white", edgecolors="black", zorder=3
     )
 
     def animate(t):
         i = np.argmin(np.abs(ts - t))
-        bob.set_offsets(qs[i])
-        spring.set_data(*make_spring(np.array([0.0, 0.0]), qs[i], 50, 0.1))
-        return spring, bob
+        for q, (spring, bob) in zip(qs, artists_per_q):
+            bob.set_offsets(q[i])
+            spring.set_data(*make_spring(np.array([0.0, 0.0]), q[i], 50, 0.1))
 
     delta_t = ts[-1] - ts[0]
     t_frames = np.linspace(ts[0], ts[-1], int(delta_t * fps / speedup))
 
-    ani = FuncAnimation(fig, animate, frames=t_frames)
+    ani = FuncAnimation(fig, animate, frames=t_frames) # type: ignore
 
     plt.close()
     return HTML(ani.to_jshtml(fps=fps))
+
+
+def plot_trajectory(ts: Array, ys: Array, ax:Axes|None=None, **kwargs) -> Axes:
+    """Plot the trajectory of a spring pendulum.
+
+    Args:
+        ts: 1D array of monotonically increasing time stamps
+            with ``shape=(k,)``.
+        ys: 2D array of ``shape=(k, n)`` containing the x and y
+            coordinates of pendulum mass as the first two entries along
+            the last axis.
+    """
+    if ys.ndim != 2 or ys.shape[-1] < 2:
+        raise ValueError("ys must be a 2D array with at least 2 columns.")
+
+    if ax is None:
+        ax = plt.gca()
+
+    ax.plot(ts, ys[:, :2], label=["$q_x$", "$q_y$"], **kwargs)
+    ax.set(
+        xlabel="Time t",
+        ylabel="Position $q$",
+        title="Spring Pendulum Position Over Time",
+    )
+    ax.legend()
+    return ax

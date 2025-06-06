@@ -1,6 +1,7 @@
 import equinox as eqx
 import jax.numpy as jnp
 from typing import Literal
+from jaxtyping import Array
 
 class SpringPendulumDerivative(eqx.Module):
     """
@@ -41,7 +42,7 @@ class SpringPendulumDerivative(eqx.Module):
         vθ_t = -(self.g / r) * jnp.sin(θ) - 2 * vr * vθ / r
         return jnp.stack([r_t, θ_t, vr_t, vθ_t])
 
-    def __call__(self, t, y, u):
+    def __call__(self, t: Array, y: Array, u: Array| None = None) -> Array:
         if self.coordinates == 'cartesian':
             return self.cartesian_derivative(t, y, u)
         elif self.coordinates == 'polar':
