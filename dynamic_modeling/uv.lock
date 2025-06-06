@@ -399,7 +399,7 @@ dependencies = [
 requires-dist = [
     { name = "diffrax", specifier = ">=0.7.0" },
     { name = "matplotlib", specifier = ">=3.10.3" },
-    { name = "notebook", specifier = ">=7.4.3" },
+    { name = "notebook", specifier = ">=6.5.7" },
 ]
 
 [[package]]

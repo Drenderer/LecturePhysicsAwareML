@@ -10,7 +10,7 @@ requires-python = ">=3.11"
 dependencies = [
     "diffrax>=0.7.0",
     "matplotlib>=3.10.3",
-    "notebook>=7.4.3",
+    "notebook>=6.5.7",
 ]
 
 [project.scripts]
