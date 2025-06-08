@@ -59,7 +59,7 @@ def make_spring(start, end, nodes, width):
 
 
 def animate_spring_pendulum(
-    ts: Array, qs: Array, fps: int = 30, speedup: int = 3
+    ts: Array, qs: Array, fps: int = 30, speedup: int = 3, color=None
 ) -> HTML:
     """Animate one or multiple solutions of the spring pendulum via
     matplotlib in a Jupyter notebook.
@@ -73,6 +73,8 @@ def animate_spring_pendulum(
             the batch axis.
         fps: Frames per second. Defaults to 30.
         speedup: Speedup of the animation. Defaults to 3.
+        color: Color of the pendulum bob(s). Defaults to None, which uses blue for the first
+            pendulum bob and gray for all others.
 
     Returns:
         HTML display object. When this object is returned by an
@@ -86,8 +88,15 @@ def animate_spring_pendulum(
     fig, ax = plt.subplots()
     x_max, y_max = np.maximum(np.abs(qs).max(axis=(0, 1)), 0.5)
 
+    if color is None:
+        bob_colors = ["blue"] + ["gray"] * (qs.shape[0] - 1)
+        spring_colors = ["black"] + ["gray"] * (qs.shape[0] - 1)
+    else:
+        bob_colors = [color] * qs.shape[0]
+        spring_colors = ["gray"] * qs.shape[0]
+
     artists_per_q = []
-    for batch_index, q in enumerate(qs):
+    for batch_index, (q, bob_color, spring_color) in enumerate(zip(qs, bob_colors, spring_colors)):
         ax.set(
             xlim=1.1 * np.array([-x_max, x_max]),
             ylim=1.1 * np.array([-y_max, 0.3]),
@@ -97,7 +106,7 @@ def animate_spring_pendulum(
         ax.set_aspect("equal")
         (spring,) = ax.plot(
             *make_spring(np.array([0.0, 0.0]), q[0], 50, 0.1),
-            c="black" if batch_index == 0 else "gray",
+            c=spring_color,
             zorder=3 if batch_index == 0 else 1,
             lw=1,
         )
@@ -106,7 +115,7 @@ def animate_spring_pendulum(
             q[0, 1],
             s=500,
             marker="o",
-            c="blue" if batch_index == 0 else "gray",
+            c=bob_color,
             zorder=4 if batch_index == 0 else 2,
         )
         artists_per_q.append((spring, bob))
@@ -145,7 +154,9 @@ def plot_trajectory(ts: Array, ys: Array, ax:Axes|None=None, **kwargs) -> Axes:
     if ax is None:
         ax = plt.gca()
 
-    ax.plot(ts, ys[:, :2], label=["$q_x$", "$q_y$"], **kwargs)
+    label = kwargs.pop("label", "")
+    ax.plot(ts, ys[:, 0], label=label+" $q_x$", ls="-", **kwargs)
+    ax.plot(ts, ys[:, 1], label=label+" $q_y$", ls="-.", **kwargs)
     ax.set(
         xlabel="Time t",
         ylabel="Position $q$",
