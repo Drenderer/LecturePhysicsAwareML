@@ -3,6 +3,8 @@ import jax.numpy as jnp
 from typing import Literal
 from jaxtyping import Array
 
+#TODO: Add dissipation
+
 class SpringPendulumDerivative(eqx.Module):
     """
     Derivative function (i.e., the right-hand side of the ODE) for the

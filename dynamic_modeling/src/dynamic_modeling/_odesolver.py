@@ -10,10 +10,12 @@ import jax
 import jax.numpy as jnp
 
 from jaxtyping import Array, PyTree
-from typing import cast, Callable
+from typing import cast, Callable, TypeVar, Generic
 
 
-class ODESolver(eqx.Module):
+T = TypeVar("T", bound=Callable[..., Array])
+
+class ODESolver(eqx.Module, Generic[T]):
     R"""Integrate a function or submodule.
 
     This class integrates :math:`\dot{y} = \text{func}(t, y, u, [\text{funcargs}])`
@@ -35,7 +37,7 @@ class ODESolver(eqx.Module):
         (100, 3)
     """
 
-    func: Callable[..., Array]
+    func: T
     solver: diffrax.AbstractSolver
     stepsize_controller: diffrax.AbstractStepSizeController
     max_steps: int = eqx.field(static=True)
@@ -45,7 +47,7 @@ class ODESolver(eqx.Module):
 
     def __init__(
         self,
-        func: Callable[..., Array],
+        func: T,
         augmentation: int | Array = 0,
         augmented_ic_learnable: bool = False,
         solver: diffrax.AbstractSolver = diffrax.Tsit5(),
