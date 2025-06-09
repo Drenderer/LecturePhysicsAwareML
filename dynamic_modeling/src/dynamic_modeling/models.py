@@ -18,13 +18,14 @@ class NODEDerivative(eqx.Module):
     def __init__(
         self,
         *,
+        state_size: int = 4,
         hidden_layer_sizes: list[int] = [16, 16],
         activation: Literal["softplus", "relu", "sigmoid"] = "softplus",
         key: PRNGKeyArray,
     ):
         self.mlp = klax.nn.MLP(
-            in_size=4,
-            out_size=4,
+            in_size=state_size,
+            out_size=state_size,
             width_sizes=hidden_layer_sizes,
             weight_init=jax.nn.initializers.variance_scaling(
                 0.2, mode="fan_avg", distribution="truncated_normal"
